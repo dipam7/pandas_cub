@@ -79,7 +79,10 @@ class DataFrame:
         -------
         list of column names
         """
-        pass
+        cols = []
+        for key in self._data.keys():
+        	cols.append(key)
+        return cols
 
     @columns.setter
     def columns(self, columns):
