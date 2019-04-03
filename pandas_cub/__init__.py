@@ -42,7 +42,14 @@ class DataFrame:
 
 
     def _check_array_lengths(self, data):
-        pass
+        for key,value in data.items():
+            to_check = value.size
+            break
+
+        for key,value in data.items():
+            if value.size != to_check:
+                raise ValueError("All 'values' must be of the same length")
+
 
     def _convert_unicode_to_object(self, data):
         new_data = {}
