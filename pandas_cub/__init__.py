@@ -126,7 +126,11 @@ class DataFrame:
         -------
         two-item tuple of number of rows and columns
         """
-        pass
+        for key, value in self._data.items():
+        	rows = len(value)
+        	break
+        cols = len(list(self._data))
+        return tuple([rows, cols])
 
     def _repr_html_(self):
         """
