@@ -84,6 +84,7 @@ class DataFrame:
         	cols.append(key)
         return cols
 
+
     @columns.setter
     def columns(self, columns):
         """
@@ -98,7 +99,25 @@ class DataFrame:
         -------
         None
         """
-        pass
+        if not isinstance(columns, list):
+        	raise TypeError("'columns' must be a list")
+        if len(self._data) != len(columns):
+        	raise ValueError("Number of cols should be same as og dataframe")
+        for c in columns:
+        	if not isinstance(c, str):
+        		raise TypeError("All column names must be strings")
+        if len(set(columns)) != len(columns):
+        	raise ValueError("Column names must be unique")
+
+
+        i = 0
+        temp = {}
+        for key, value in self._data.items():
+        	new_key = columns[i]
+        	temp[new_key] = self._data[key]
+        	i+=1
+
+        self._data = temp
 
     @property
     def shape(self):
