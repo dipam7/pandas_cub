@@ -227,7 +227,11 @@ class DataFrame:
         -------
         A single 2D NumPy array of the underlying data
         """
-        pass
+        vals = []
+        for key, value in self._data.items():
+            vals.append(value.reshape(len(value), 1))
+        all_vals = np.column_stack(vals)
+        return all_vals
 
     @property
     def dtypes(self):
