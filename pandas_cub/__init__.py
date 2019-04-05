@@ -272,8 +272,29 @@ class DataFrame:
         """
         sub_dict = {}
 
+        if isinstance(item, DataFrame):
+            if len(item.columns) > 1:
+                raise ValueError("cannot pass more than one column")
+            else:
+                key = item.columns[0]
+                bools = item.values
+                if bools.dtype.kind != 'b':
+                    raise ValueError("df must be of type 'bool'")
+                for i in range(0, len(bools)):
+                    if bools[i][0]:
+                        for key, value in self._data.items():
+                            if key in sub_dict:
+                                sub_dict[key].append(value[i])
+                            else:
+                                sub_dict[key] = []
+                                sub_dict[key].append(value[i])
+                            # print(value[i])
+                    i = i + 1
 
-        if isinstance(item, list):
+                for key, value in sub_dict.items():
+                    sub_dict[key] = np.array(sub_dict[key])
+
+        elif isinstance(item, list):
             for i in item:
                 col = i
                 vals = self._data[i]
