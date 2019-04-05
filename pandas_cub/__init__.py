@@ -270,7 +270,13 @@ class DataFrame:
         -------
         A subset of the original DataFrame
         """
-        pass
+        if not isinstance(item, str):
+            raise TypeError("'column name' must be a string")
+        else:
+            col = item
+            vals = self._data[item] 
+            return DataFrame({col: vals})
+
 
     def _getitem_tuple(self, item):
         # simultaneous selection of rows and cols -> df[rs, cs]
