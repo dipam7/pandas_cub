@@ -53,8 +53,11 @@ class DataFrame:
 
     def _convert_unicode_to_object(self, data):
         new_data = {}
-        for key, value in data.items():
-        	new_data[key] = value.astype(object)
+        for col_name, values in data.items():
+            if values.dtype.kind == 'U':
+                new_data[col_name] = values.astype('O')
+            else:
+                new_data[col_name] = values
         return new_data
 
     def __len__(self):
@@ -241,8 +244,17 @@ class DataFrame:
         A two-column DataFrame of column names in one column and
         their data type in the other
         """
-        DTYPE_NAME = {'O': 'string', 'i': 'int', 'f': 'float', 'b': 'bool'}
-        pass
+        type_mapping = {'O': 'string', 'i': 'int', 'f': 'float', 'b': 'bool'}
+        DTYPE_NAME = {'Column Name': [], 'Data Type': []}
+        for key, value in self._data.items():
+            DTYPE_NAME['Column Name'].append(key)
+            DTYPE_NAME['Data Type'].append(type_mapping[value.dtype.kind])
+
+        DTYPE_NAME['Column Name'] = np.array(DTYPE_NAME['Column Name'])
+        DTYPE_NAME['Data Type'] = np.array(DTYPE_NAME['Data Type'])
+
+        return DataFrame(DTYPE_NAME)        
+
 
     def __getitem__(self, item):
         """
