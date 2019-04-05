@@ -244,7 +244,6 @@ class DataFrame:
         A two-column DataFrame of column names in one column and
         their data type in the other
         """
-<<<<<<< HEAD
         type_mapping = {'O': 'string', 'i': 'int', 'f': 'float', 'b': 'bool'}
         DTYPE_NAME = {'Column Name': [], 'Data Type': []}
         for key, value in self._data.items():
@@ -256,17 +255,6 @@ class DataFrame:
 
         return DataFrame(DTYPE_NAME)        
 
-=======
-        DTYPE_NAME = {'O': 'string', 'i': 'int', 'f': 'float', 'b': 'bool'}
-        col_arr = np.array(self.columns)
-        dtypes = []
-        for values in self._data.values():
-            kind = values.dtype.kind
-            dtype = DTYPE_NAME[kind]
-            dtypes.append(dtype)
-
-        return DataFrame({'Column Name': col_arr, 'Data Type': np.array(dtypes)})
->>>>>>> f941f733fff4e6ec2fdcccddb01b3a3d50ac31d7
 
     def __getitem__(self, item):
         """
@@ -326,7 +314,7 @@ class DataFrame:
 
     def _ipython_key_completions_(self):
         # allows for tab completion when doing df['c
-        pass
+        return self.columns
 
     def __setitem__(self, key, value):
         # adds a new column or a overwrites an old column
