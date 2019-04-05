@@ -270,12 +270,21 @@ class DataFrame:
         -------
         A subset of the original DataFrame
         """
-        if not isinstance(item, str):
+        sub_dict = {}
+
+
+        if isinstance(item, list):
+            for i in item:
+                col = i
+                vals = self._data[i]
+                sub_dict[col] = vals
+        elif not isinstance(item, str):
             raise TypeError("'column name' must be a string")
         else:
             col = item
-            vals = self._data[item] 
-            return DataFrame({col: vals})
+            vals = self._data[item]
+            sub_dict[col] = vals 
+        return DataFrame(sub_dict)
 
 
     def _getitem_tuple(self, item):
