@@ -242,7 +242,14 @@ class DataFrame:
         their data type in the other
         """
         DTYPE_NAME = {'O': 'string', 'i': 'int', 'f': 'float', 'b': 'bool'}
-        pass
+        col_arr = np.array(self.columns)
+        dtypes = []
+        for values in self._data.values():
+            kind = values.dtype.kind
+            dtype = DTYPE_NAME[kind]
+            dtypes.append(dtype)
+
+        return DataFrame({'Column Name': col_arr, 'Data Type': np.array(dtypes)})
 
     def __getitem__(self, item):
         """
