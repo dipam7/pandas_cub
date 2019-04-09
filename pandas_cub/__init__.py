@@ -318,7 +318,16 @@ class DataFrame:
 
     def __setitem__(self, key, value):
         # adds a new column or a overwrites an old column
-        pass
+        if not isinstance(key, str):
+        	raise NotImplementedError("'df' can receive only a single col")
+        if not isinstance(value, np.ndarray):
+        	raise TypeError("'value' must be a numpy array")
+        elif value.ndim > 1:
+        	raise ValueError("'value' should be a 1 dim array")
+        elif len(value) != len(self):
+        	raise ValueError("'length mistmatch'")
+
+        self._data[key] = value
 
     def head(self, n=5):
         """
