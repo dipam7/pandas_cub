@@ -336,8 +336,6 @@ class DataFrame:
         	elif len(value) != len(self):
         		raise ValueError("'df' length mistmatch")
         	else:
-        		if value.dtype.kind == 'U':
-        			value.astype('O')
         		self._data[key] = next(iter(value._data.values()))
 
         elif isinstance(value, (int, float, str, bool)):
@@ -356,7 +354,12 @@ class DataFrame:
         -------
         DataFrame
         """
-        pass
+        head_dict = {}
+        for key, value in self._data.items():
+        	head_dict[key] = value[:n]
+
+
+        return DataFrame(head_dict)
 
     def tail(self, n=5):
         """
@@ -370,7 +373,11 @@ class DataFrame:
         -------
         DataFrame
         """
-        pass
+        tail_dict = {}
+        for key, value in self._data.items():
+        	tail_dict[key] = value[-n:]
+
+        return DataFrame(tail_dict)
 
     #### Aggregation Methods ####
 
