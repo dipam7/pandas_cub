@@ -319,16 +319,31 @@ class DataFrame:
     def __setitem__(self, key, value):
         # adds a new column or a overwrites an old column
         if not isinstance(key, str):
-        	raise NotImplementedError("'df' can receive only a single col")
-        if not isinstance(value, np.ndarray):
-        	raise TypeError("'value' must be a numpy array")
-        elif value.ndim > 1:
-        	raise ValueError("'value' should be a 1 dim array")
-        elif len(value) != len(self):
-        	raise ValueError("'length mistmatch'")
+        	raise NotImplementedError("'df' can only set a single col")
+        if isinstance(value, np.ndarray):
+        	if value.ndim > 1:
+        		raise ValueError("'value' should be a 1 dim array")
+        	elif len(value) != len(self):
+        		raise ValueError("'length mistmatch'")
+        	else:
+        		if value.dtype.kind == 'U':
+        			value.astype('O')
+        		self._data[key] = value
 
-        self._data[key] = value
+        elif isinstance(value, DataFrame):
+        	if len(value.columns) > 1:
+        		raise ValueError("'df can have only one column")
+        	elif len(value) != len(self):
+        		raise ValueError("'df' length mistmatch")
+        	else:
+        		if value.dtype.kind == 'U':
+        			value.astype('O')
+        		self._data[key] = next(iter(value._data.values()))
 
+        elif isinstance(value, (int, float, str, bool)):
+        	self._data[key] = np.repeat(value, len(self))
+        else: 
+        	raise TypeError("invalid type for 'value'")
     def head(self, n=5):
         """
         Return the first n rows
