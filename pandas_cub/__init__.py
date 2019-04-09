@@ -427,7 +427,14 @@ class DataFrame:
         -------
         A DataFrame
         """
-        pass
+        agg_dict = {}
+        for key, values in self._data.items():
+        	try:
+        		val = aggfunc(values)
+        	except TypeError:
+        		continue
+        	agg_dict[key] = np.array([val])
+        return DataFrame(agg_dict)
 
     def isna(self):
         """
