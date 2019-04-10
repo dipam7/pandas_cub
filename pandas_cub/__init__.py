@@ -446,7 +446,7 @@ class DataFrame:
         """
         nan_dict = {}
         for key, value in self._data.items():
-        	if value.dtype.kind == 'O':
+        	if (value.dtype.kind == 'O') | (value.dtype.kind == 'U'):
         		nan_dict[key] = value == None
         	else:
         		nan_dict[key] = np.isnan(value)
@@ -461,7 +461,15 @@ class DataFrame:
         -------
         A DataFrame
         """
-        pass
+        count_dict = {}
+        for key,value in self.isna()._data.items():
+        	counter = 0
+        	for val in value:
+        		if not val:
+        			counter += 1
+        	count_dict[key] = np.array([counter])
+
+        return DataFrame(count_dict)
 
     def unique(self):
         """
