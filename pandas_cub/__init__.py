@@ -576,7 +576,17 @@ class DataFrame:
         -------
         A DataFrame
         """
-        pass
+        if not isinstance(columns, (str, list)):
+            raise TypeError("'columns' should be a list or string")
+
+        dropped_dict = {}
+        for key, value in self._data.items():
+            if key in columns:
+                continue
+            else:
+                dropped_dict[key] = value
+
+        return DataFrame(dropped_dict)
 
     #### Non-Aggregation Methods ####
 
