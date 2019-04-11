@@ -551,7 +551,18 @@ class DataFrame:
         -------
         A DataFrame
         """
-        pass
+        renamed_dict = {}
+        if not isinstance(columns, dict):
+            raise TypeError("'cols' must be a dictionary")
+
+        for key, value in self._data.items():
+            if key in columns:
+                new_key = columns[key]
+                renamed_dict[new_key] = value
+            else:
+                renamed_dict[key] = value
+
+        return DataFrame(renamed_dict)
 
     def drop(self, columns):
         """
