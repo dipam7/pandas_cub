@@ -514,7 +514,29 @@ class DataFrame:
         -------
         A list of DataFrames or a single DataFrame if one column
         """
-        pass
+        value_list = []
+        for key, value in self._data.items():
+            value_dict = {}
+            # find the keys and values
+            keys, vals = np.unique(value, return_counts = True)
+
+            # find unique keys
+            keys = np.unique(keys)
+
+            # sort the values according to frequency
+            # in the descending order
+            order = np.argsort(-vals)
+            vals = vals[order]
+            keys = keys[order]
+
+            if normalize:
+                vals = vals / vals.sum()
+
+            value_dict[key] = keys
+            value_dict['count'] = vals
+
+            value_list.append(DataFrame(value_dict))
+        return value_list
 
     def rename(self, columns):
         """
