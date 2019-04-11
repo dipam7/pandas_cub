@@ -479,7 +479,13 @@ class DataFrame:
         -------
         A list of one-column DataFrames
         """
-        pass
+        unique_list = []
+        for key, value in self._data.items():
+            unique_dict = {}
+            unique_dict[key] = np.unique(value)
+            unique_list.append(DataFrame(unique_dict))
+
+        return unique_list
 
     def nunique(self):
         """
