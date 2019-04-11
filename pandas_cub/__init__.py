@@ -495,7 +495,11 @@ class DataFrame:
         -------
         A DataFrame
         """
-        pass
+        nunique_dict = {}
+        for key, value in self._data.items():
+            nunique_dict[key] = np.array(len(np.unique(value)))
+
+        return DataFrame(nunique_dict)
 
     def value_counts(self, normalize=False):
         """
